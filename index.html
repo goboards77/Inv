@@ -16,15 +16,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="min-h-screen bg-gray-900 text-white text-[16px]" style="font-family: 'Poppins', sans-serif;">
-<header id="topbar" class="w-full bg-gray-800 hover:bg-blue-800 text-green-500 px-5 py-3 cursor-pointer text-[20px]">Inventory App</header>
+<header id="topbar" class="w-full bg-gray-800 hover:bg-blue-800 text-green-500 px-5 py-3 cursor-pointer text-[16px]">☰ Inventory App</header>
 <nav id="top-nav" class="fixed top-[-1px] left-0 h-[670px] w-full bg-gray-900 transform -translate-y-full transition-transform duration-300 z-50 overflow-y-auto">
     <ul>
-        <li><a class="block hover:bg-lime-800 px-2 py-3 cursor-pointer menu-link bg-gray-800" id="close">Home</a></li>
-        <li><a class="block hover:bg-lime-800 px-2 py-3 cursor-pointer menu-link" onclick="showCont('tranCont')">Transaction</a></li>
-        <li><a class="block hover:bg-lime-800 px-2 py-3 cursor-pointer menu-link" onclick="insertTran()">Update Transaction</a></li>
-        <li><a class="block hover:bg-lime-800 px-2 py-3 cursor-pointer menu-link" onclick="viewStock()">View Stock</a></li>
-        <li><a class="block hover:bg-lime-800 px-2 py-3 cursor-pointer menu-link" onclick="viewDeptCons()">View Deptwise</a></li>
-        <li><a class="block hover:bg-lime-800 px-2 py-3 cursor-pointer menu-link" onclick="viewCatgwiseStock()">View Catgwise Stock</a></li>
+        <li><a class="block hover:bg-gray-900 px-2 py-3 cursor-pointer menu-link text-blue-500 mt-3" id="close">🏠 Home</a></li>
+        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-green-500" onclick="showCont('tranCont')">🔁 Transaction</a></li>
+        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-red-500" onclick="insertTran()">✍️ Update</a></li>
+        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-yellow-500" onclick="viewStock()">🚨 Stock</a></li>
+        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-yellow-500" onclick="viewDeptCons()">👀 Deptwise</a></li>
+        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-yellow-500" onclick="viewCatgwiseStock()">🗃️ Catgwise</a></li>
+        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-orange-500" onclick="logout()">🚀 Logout</a></li>
     </ul>
 </nav>
 
@@ -34,7 +35,7 @@
     <button class="block mx-auto mt-10 px-5 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="login()">🏠︎ Login</button>
 </div>
 
-<div id="tranCont" class="hidden max-w-md p-1">
+<div id="tranCont" class="hidden max-w-md p-3">
     <div id="ttypeDiv" class="relative mt-6"><input id="ttype1" class="input-box" type="text"/><label for="ttype1" class="label">In or Out</label></div>
     <div id="dateDiv" class="relative mt-6"><input id="date1" class="input-box date-input" type="date"/><label for="date1" class="label">Date</label></div>
     <div id="suppDiv" class="relative mt-6"><input id="supp1" class="input-box" type="text"/><label for="supp1" class="label">Supplier</label><button class="absolute right-1 text-green-500" onclick="showCont('tranCont', 'suppCont')">✚</button></div>
@@ -46,27 +47,27 @@
     <div id="narDiv" class="relative mt-6"><input id="nar1" class="input-box" type="text"/><label for="nar1" class="label">Narration</label></div>
     <button id="btnDiv" class="w-full mt-20 px-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveTran()">Save</button>
 
-    <div id="suppCont" class="hidden w-full max-w-md p-1 fixed top-0 mt-[200px] z-50 bg-white rounded-lg">
+    <div id="suppCont" class="hidden w-[340px] p-1 fixed top-0 mt-[220px] z-50 bg-white rounded-lg">
         <div class="relative mt-6"><input id="suppname" class="input-box text-black" type="text"/><label for="suppname" class="label">New Supplier Name</label></div>
-        <button class="mx-auto mt-7 mb-3 px-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
-        <button class="mx-auto mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
+        <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
     </div>
-    <div id="deptCont" class="hidden w-full max-w-md p-1 fixed top-0 mt-[200px] z-50 bg-white rounded-lg">
+    <div id="deptCont" class="hidden w-[340px] p-1 fixed top-0 mt-[220px] z-50 bg-white rounded-lg">
         <div class="relative mt-6"><input id="deptname" class="input-box text-black" type="text"/><label for="deptname" class="label">New Department Name</label></div>
-        <button class="mx-auto mt-7 mb-3 px-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('deptname')">Save</button>
-        <button class="mx-auto mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
+        <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
     </div>
-    <div id="catgCont" class="hidden w-full max-w-md p-1 fixed top-0 mt-[200px] z-50 bg-white rounded-lg">
+    <div id="catgCont" class="hidden w-[340px] p-1 fixed top-0 mt-[220px] z-50 bg-white rounded-lg">
         <div class="relative mt-6"><input id="catgname" class="input-box text-black" type="text"/><label for="catgname" class="label">New Category Name</label></div>
-        <button class="mx-auto mt-7 mb-3 px-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('catgname')">Save</button>
-        <button class="mx-auto mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
+        <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
     </div>
-    <div id="itemCont" class="hidden w-full max-w-md p-1 fixed top-0 mt-[150px] z-50 bg-white rounded-lg">
+    <div id="itemCont" class="hidden w-[340px] p-1 fixed top-0 mt-[150px] z-50 bg-white rounded-lg">
         <div class="relative mt-6"><input id="catggrp" class="input-box text-black" type="text"/><label for="catggrp" class="label">Category</label></div>
         <div class="relative mt-6"><input id="itemname" class="input-box text-black" type="text"/><label for="itemname" class="label">Item Name</label></div>
         <div class="relative mt-6"><input id="loc" class="input-box text-black" type="text"/><label for="loc" class="label">Location(Store3,Shelf2,Rack6....)</label></div>
-        <button class="mx-auto mt-7 mb-3 px-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('itemname')">Save</button>
-        <button class="mx-auto mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
+        <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
     </div>
 </div>
 
@@ -84,7 +85,7 @@
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import {getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut,} 
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import {getFirestore, collection, getDocs, getDoc, doc, deleteDoc, updateDoc, query, where, addDoc, writeBatch, onSnapshot } 
+    import {getFirestore, collection, getDocs, getDoc, doc, deleteDoc, updateDoc, addDoc } 
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     const firebaseConfig = {
         apiKey: "AIzaSyDrI9vIDUePbzHrTSRCKAcJ7oCfCIrSIUI",
@@ -106,13 +107,12 @@
             showCont('topbar'); 
             await fetchAllOnce();
             await loadDropdownData();
-        } 
-        else { document.getElementById("topbar").classList.add("hidden"); showCont("lgnCont"); } 
+        } else { document.getElementById("topbar").classList.add("hidden"); showCont("lgnCont"); } 
     });
     document.addEventListener('DOMContentLoaded', () => {
         const labelClass = "absolute top-2 left-0 px-2 text-gray-500 transform -translate-y-6 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-80 peer-focus:text-blue-600";
         document.querySelectorAll('label').forEach(label => { label.classList.add(...labelClass.split(' ')); });
-        const inputClass = "peer w-full px-2 border-b-2 border-gray-500 bg-transparent pt-2 focus:outline-none focus:border-blue-600 pr-2";
+        const inputClass = "peer w-full max-w-md px-2 border-b-2 border-gray-500 bg-transparent pt-2 focus:outline-none focus:border-blue-600 pr-2";
         document.querySelectorAll('.input-box').forEach(input => {
             input.classList.add(...inputClass.split(' '));
             input.setAttribute('placeholder', ' ');
@@ -127,7 +127,7 @@
             } 
         }); 
     });                 
-    document.getElementById('topbar').addEventListener('click', () => { document.getElementById('top-nav').classList.remove('-translate-y-full'); showCont(); });
+    document.getElementById('topbar').addEventListener('click', () => { document.getElementById('top-nav').classList.remove('-translate-y-full'); showCont(); clear(); });
     document.querySelectorAll('.menu-link').forEach(link => {
         link.addEventListener('click', e => {
             if (link.getAttribute('id') === 'close') { e.preventDefault(); }
@@ -142,9 +142,7 @@
         }
         return window.cachedData;
     };
-
-    window.clear = function () { document.querySelectorAll("input").forEach(el => el.value = ""); };
-    
+    window.clear = function () { document.querySelectorAll("input").forEach(el => el.value = ""); };  
     window.showCont = function (...idToShow) {
         const allIds = ['lgnCont', 'suppCont', 'deptCont', 'catgCont', 'itemCont', 'delCont', 'tranCont', 'tblCont',];
         allIds.forEach(id => { const el = document.getElementById(id); if (el) { el.classList.add("hidden"); el.style.setProperty('display', 'none', 'important'); } });
@@ -218,7 +216,6 @@
         inputElement.addEventListener("click", onClick);
         inputElement.addEventListener("blur", onBlur);
         document.addEventListener("click", onDocClick);
-
         inputElement._dropdownCleanup = () => {
             inputElement.removeEventListener("input", onInput);
             inputElement.removeEventListener("click", onClick);
@@ -268,13 +265,7 @@
             }); 
         }
         window.table = new Tabulator(document.getElementById('table'), {
-            data: rows,
-            layout: "fitDataTable",
-            reactiveData: true,
-            rowHeight: 40,
-            maxHeight: "600px",
-            columns: fullColumns, 
-        });
+            data: rows, layout: "fitDataTable", reactiveData: true, rowHeight: 40, maxHeight: "600px", columns: fullColumns, });
         document.getElementById('excelBtn')?.addEventListener("click", () => { window.table.download("xlsx", "data.xlsx", {sheetName: "Sheet1"}); });
         document.getElementById('pdfBtn')?.addEventListener("click", () => { window.table.download("pdf", "data.pdf", {orientation: "portrait"}); });
         document.getElementById('printBtn')?.addEventListener("click", () => { window.table.print(false, true); });
@@ -339,8 +330,7 @@
         ];
         createEditableTable(rows, columns, showDelete, showUpdate, editable);
         showCont("tblCont"); 
-    };
-    
+    }; 
     window.showTransactionContainer = function (rowData) { 
         const fieldDivs = ['dateDiv','suppDiv','deptDiv','catgDiv','itemDiv','pricDiv','qtyDiv','narDiv','btnDiv'];
         document.getElementById("ttype1").value = rowData.ttype || "";
@@ -366,7 +356,6 @@
         });
         showCont('tranCont');
     };
-   
     window.saveTran = async function () {
         const fields = ['ttype1','date1','supp1','dept1','catg1','item1','pric1','qty1','nar1'];    
         const values = {};
@@ -398,7 +387,8 @@
         const data = await fetchAllOnce();
         const stockMap = {};
         data.forEach(item => {
-            const key = item.item || "Unknown";
+            const key = item.item?.trim();
+            if (!key) return;
             const qty = Number(item.qty) || 0;
             if (!stockMap[key]) stockMap[key] = { in: 0, out: 0 };
             if (item.ttype?.toLowerCase() === "in") { stockMap[key].in += qty; } 
@@ -409,7 +399,6 @@
         createEditableTable(stockRows, stockColumns, false, false, false);
         showCont("tblCont"); 
     };
-
     window.viewDeptCons = async function () {
         const data = await fetchAllOnce();
         const deptMap = {};
@@ -428,12 +417,12 @@
         createEditableTable(rows, columns, false, false, false);
         showCont("tblCont");
     };
-
     window.viewCatgwiseStock = async function () {
         const data = await fetchAllOnce();
         const catgMap = {};
         data.forEach(item => {
-            const catg = item.catg || "Unknown Category";
+            const catg = item.catg?.trim();
+            if (!catg) return;
             const qty  = Number(item.qty) || 0;
             if (!catgMap[catg]) catgMap[catg] = { in: 0, out: 0 };
             if (item.ttype?.toLowerCase() === "in") { catgMap[catg].in += qty; } else if (item.ttype?.toLowerCase() === "out") { catgMap[catg].out += qty; }
@@ -452,13 +441,9 @@
             const ttype = document.getElementById('ttype1').value;
             fieldDivs.forEach(id => {
                 const div = document.getElementById(id);
-                if (ttype === 'In') {
-                    if (id === 'deptDiv') div.style.display = 'none';
-                    else div.style.display = '';
-                } else if (ttype === 'Out') {
-                    if (id === 'suppDiv' || id === 'pricDiv') div.style.display = 'none';
-                    else div.style.display = '';
-                } else { div.style.display = 'none'; }
+                if (ttype === 'In') { if (id === 'deptDiv') div.style.display = 'none'; else div.style.display = ''; } 
+                else if (ttype === 'Out') { if (id === 'suppDiv' || id === 'pricDiv') div.style.display = 'none'; else div.style.display = ''; } 
+                else { div.style.display = 'none'; }
             });
         });
     };
@@ -472,11 +457,8 @@
         const docSnap = await getDoc(docRef);
         if (docSnap.exists() && docSnap.data().approved === true) { showCont("topbar"); }
     };
-    window.logout = async function () { await signOut(auth); showCont("lgnCont"); };
+    window.logout = async function () { if (confirm("Are you sure you want to logout?")) { await signOut(auth); showCont("lgnCont"); } };
     window.addEventListener("beforeunload", function (e) { e.preventDefault(); e.returnValue = ""; });
 </script>
 </body>
-
 </html>
-
-
