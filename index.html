@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Gopal</title>
+    <title>Inventory Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
@@ -54,19 +54,19 @@
     </div>
     <div id="deptCont" class="hidden w-[340px] p-1 fixed top-0 mt-[220px] z-50 bg-white rounded-lg">
         <div class="relative mt-6"><input id="deptname" class="input-box text-black" type="text"/><label for="deptname" class="label">New Department Name</label></div>
-        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
+        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('deptname')">Save</button>
         <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
     </div>
     <div id="catgCont" class="hidden w-[340px] p-1 fixed top-0 mt-[220px] z-50 bg-white rounded-lg">
         <div class="relative mt-6"><input id="catgname" class="input-box text-black" type="text"/><label for="catgname" class="label">New Category Name</label></div>
-        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
+        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('catgname')">Save</button>
         <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
     </div>
     <div id="itemCont" class="hidden w-[340px] p-1 fixed top-0 mt-[150px] z-50 bg-white rounded-lg">
         <div class="relative mt-6"><input id="catggrp" class="input-box text-black" type="text"/><label for="catggrp" class="label">Category</label></div>
         <div class="relative mt-6"><input id="itemname" class="input-box text-black" type="text"/><label for="itemname" class="label">Item Name</label></div>
         <div class="relative mt-6"><input id="loc" class="input-box text-black" type="text"/><label for="loc" class="label">Location(Store3,Shelf2,Rack6....)</label></div>
-        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
+        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('itemname')">Save</button>
         <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
     </div>
 </div>
