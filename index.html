@@ -473,8 +473,9 @@
         if (docSnap.exists() && docSnap.data().approved === true) { showCont("topbar"); }
     };
     window.logout = async function () { await signOut(auth); showCont("lgnCont"); };
-    //window.addEventListener("beforeunload", function (e) { e.preventDefault(); e.returnValue = ""; });
+    window.addEventListener("beforeunload", function (e) { e.preventDefault(); e.returnValue = ""; });
 </script>
 </body>
 
 </html>
+
