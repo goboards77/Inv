@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Inventory Management System</title>
+    <title>Inventory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
@@ -13,29 +13,60 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">  
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body class="min-h-screen bg-gray-900 text-white text-[16px]" style="font-family: 'Poppins', sans-serif;">
-<header id="topbar" class="w-full bg-gray-800 hover:bg-blue-800 text-green-500 px-5 py-3 cursor-pointer text-[16px]">☰ Inventory App</header>
-<nav id="top-nav" class="fixed top-[-1px] left-0 h-[670px] w-full bg-gray-900 transform -translate-y-full transition-transform duration-300 z-50 overflow-y-auto">
-    <ul>
-        <li><a class="block hover:bg-gray-900 px-2 py-3 cursor-pointer menu-link text-blue-500 mt-3" id="close">🏠 Home</a></li>
-        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-green-500" onclick="showCont('tranCont')">🔁 Transaction</a></li>
-        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-red-500" onclick="insertTran()">✍️ Update</a></li>
-        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-yellow-500" onclick="viewStock()">🚨 Stock</a></li>
-        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-yellow-500" onclick="viewDeptCons()">👀 Deptwise</a></li>
-        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-yellow-500" onclick="viewCatgwiseStock()">🗃️ Catgwise</a></li>
-        <li><a class="block hover:bg-gray-800 px-2 py-3 cursor-pointer menu-link text-orange-500" onclick="logout()">🚀 Logout</a></li>
-    </ul>
-</nav>
+    <style>
+        :root {
+            --body-bg: #ffffff;      /* white */ 
+            --form-bg: #f3f4f6;      /* gray-100 */ 
+            --dd-bg: #e5e7eb;        /* gray-200 */ 
+            --text-color: #000000;   /* black */
+            --hover-color: #76d676;
+        }
 
-<div id="lgnCont" class="hidden w-full max-w-md p-1 mt-200 rounded-b-2xl bg-gray-900">
-    <div class="relative mt-6"><input id="loginEmail" class="input-box" type="email"/><label for="loginEmail" class="label">Email</label></div>
-    <div class="relative mt-6"><input id="loginPassword" class="input-box" type="password"/><label for="loginPassword" class="label">Password</label></div>
-    <button class="block mx-auto mt-10 px-5 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="login()">🏠︎ Login</button>
+        body.dark-mode {
+            --body-bg: #111827;      /* gray-900 */
+            --form-bg: #1f2937;      /* gray-800 */
+            --dd-bg: #374151;        /* gray-700 */
+            --text-color: #ffffff;   /* white */
+            --hover-color: #046304;
+        }
+
+        .btn { background-color: var(--form-bg); color: var(--text-color); }
+        .btn:hover { background-color: var(--hover-color); }
+        .drpdwn {background-color: var(--dd-bg); color: var(--text-color); }
+        .card { background-color: var(--form-bg); }
+        .input-box { background-color: var(--dd-bg); color: var(--text-color); }  
+        body { background-color: var(--body-bg); color: var(--text-color); }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .blink {
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+
+<body class="p-2" style="font-family: 'Roboto'; font-size: 18px;">
+
+<div id="topBar"class="hidden flex">
+    <button id="crt" class="w-10 h-10 ml-3 rounded-full text-center bg-green-500 ring-green-600 hover:ring-8 transform transition-all duration-300 hover:scale-125 origin-left" onclick="showCont('tranCont')">✚</button>
+    <button id="upd" class="w-10 h-10 ml-3 rounded-full text-center bg-red-600 ring-red-700 hover:ring-8 transform transition-all duration-300 hover:scale-125 origin-left" onclick="insertTran()">▬</button>
+    <button id="view" class="w-10 h-10 ml-3 rounded-full text-center bg-yellow-800 ring-yellow-700 hover:ring-8 transform transition-all duration-300 hover:scale-125 origin-left" onclick="showCont('viewCont')">👀</button>
+    <button id="lout" class="w-10 h-10 ml-3 rounded-full text-center bg-orange-800 ring-orange-700 hover:ring-8 transform transition-all duration-300 hover:scale-125 origin-left" onclick="window.logout()">🔐</button>
+    <button id="tdl" class="w-10 h-10 ml-3 rounded-full text-center bg-lime-500 ring-lime-600 hover:ring-8 transform transition-all duration-300 hover:scale-125 origin-left" onclick="switchTheme()">🌗</button>
+    <button id="jokeBtn" class="w-10 h-10 ml-3 rounded-full text-center bg-blue-500 ring-blue-600 hover:ring-8 transform transition-all duration-300 hover:scale-125 origin-left" onclick="jokes()">😂</button>
 </div>
 
-<div id="tranCont" class="hidden max-w-md p-3">
+<div id="jokeBox" class="hidden w-full max-w-md p-3 mt-[50px] rounded-lg"></div>
+
+<div id="lgnCont" class="hidden w-full max-w-md p-3 mt-[50px] rounded-lg">
+    <div class="relative mt-6"><input id="loginEmail" class="input-box" type="email"/><label for="loginEmail" class="label">Email</label></div>
+    <div class="relative mt-6"><input id="loginPassword" class="input-box" type="password"/><label for="loginPassword" class="label">Password</label></div>
+    <button class="block mx-auto mt-10 px-5 py-2 bg-green-500 hover:bg-green-600 rounded-lg" onclick="login()">🏠︎ Login</button>
+</div>
+
+<div id="tranCont" class="hidden card max-w-md p-3 mt-5 rounded-lg shadow-xl">
     <div id="ttypeDiv" class="relative mt-6"><input id="ttype1" class="input-box" type="text"/><label for="ttype1" class="label">In or Out</label></div>
     <div id="dateDiv" class="relative mt-6"><input id="date1" class="input-box date-input" type="date"/><label for="date1" class="label">Date</label></div>
     <div id="suppDiv" class="relative mt-6"><input id="supp1" class="input-box" type="text"/><label for="supp1" class="label">Supplier</label><button class="absolute right-1 text-green-500" onclick="showCont('suppCont', 'tranCont')">✚</button></div>
@@ -45,41 +76,63 @@
     <div id="pricDiv" class="relative mt-6"><input id="pric1" class="input-box" type="number"/><label for="pric1" class="label">Purchase Price</label></div>
     <div id="qtyDiv" class="relative mt-6"><input id="qty1" class="input-box" type="number"/><label for="qty1" class="label">Quantity</label></div>
     <div id="narDiv" class="relative mt-6"><input id="nar1" class="input-box" type="text"/><label for="nar1" class="label">Narration</label></div>
-    <button id="btnDiv" class="w-full mt-20 px-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveTran()">Save</button>
+    <button id="btnDiv" class="w-full mt-10 py-2 bg-green-500 hover:bg-green-600 rounded-lg" onclick="saveTran()">Save</button>
 
-    <div id="suppCont" class="w-[340px] p-1 fixed top-0 mt-[220px] z-50 bg-white rounded-lg">
-        <div class="relative mt-6"><input id="suppname" class="input-box text-black" type="text"/><label for="suppname" class="label">New Supplier Name</label></div>
-        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
-        <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+    <div id="suppCont" class="drpdwn w-full max-w-md p-3 fixed top-0 left-1 p-3 mt-[200px] z-50 bg-gray-200 rounded-lg">
+        <div class="relative mt-6"><input id="suppname" class="input-box" type="text"/><label for="suppname" class="label">New Supplier Name</label></div>
+        <div class="flex gap-10 justify-center">
+            <button class="mt-10 mb-5 px-10 py-2 bg-green-500 hover:bg-green-600 rounded-lg" onclick="saveCDSI('suppname')">Save</button>
+            <button class="mt-10 mb-5 px-10 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+        </div>
     </div>
-    <div id="deptCont" class="hidden w-[340px] p-1 fixed top-0 mt-[220px] z-50 bg-white rounded-lg">
-        <div class="relative mt-6"><input id="deptname" class="input-box text-black" type="text"/><label for="deptname" class="label">New Department Name</label></div>
-        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('deptname')">Save</button>
-        <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+    <div id="deptCont" class="drpdwn w-full max-w-md p-3 fixed top-0 left-1 mt-[200px] z-50 bg-gray-200 rounded-lg">
+        <div class="relative mt-6"><input id="deptname" class="input-box" type="text"/><label for="deptname" class="label">New Department Name</label></div>
+        <div class="flex gap-10 justify-center">
+            <button class="mt-10 mb-5 px-10 py-2 bg-green-500 hover:bg-green-600 rounded-lg" onclick="saveCDSI('deptname')">Save</button>
+            <button class="mt-10 mb-5 px-10 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+        </div>
     </div>
-    <div id="catgCont" class="hidden w-[340px] p-1 fixed top-0 mt-[220px] z-50 bg-white rounded-lg">
-        <div class="relative mt-6"><input id="catgname" class="input-box text-black" type="text"/><label for="catgname" class="label">New Category Name</label></div>
-        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('catgname')">Save</button>
-        <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+    <div id="catgCont" class="drpdwn w-full max-w-md p-3 fixed top-0 left-1 mt-[200px] z-50 bg-gray-200 rounded-lg">
+        <div class="relative mt-6"><input id="catgname" class="input-box" type="text"/><label for="catgname" class="label">New Category Name</label></div>
+        <div class="flex gap-10 justify-center">
+            <button class="mt-10 mb-5 px-10 py-2 bg-green-500 hover:bg-green-600 rounded-lg" onclick="saveCDSI('catgname')">Save</button>
+            <button class="mt-10 mb-5 px-10 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+        </div>
     </div>
-    <div id="itemCont" class="hidden w-[340px] p-1 fixed top-0 mt-[150px] z-50 bg-white rounded-lg">
-        <div class="relative mt-6"><input id="catggrp" class="input-box text-black" type="text"/><label for="catggrp" class="label">Category</label></div>
-        <div class="relative mt-6"><input id="itemname" class="input-box text-black" type="text"/><label for="itemname" class="label">Item Name</label></div>
-        <div class="relative mt-6"><input id="loc" class="input-box text-black" type="text"/><label for="loc" class="label">Location(Store3,Shelf2,Rack6....)</label></div>
-        <button class="mt-7 mb-3 px-10 ml-10 py-2 bg-green-700 hover:bg-green-600 rounded-lg" onclick="saveCDSI('itemname')">Save</button>
-        <button class="mt-7 mb-3 px-10 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+    <div id="itemCont" class="drpdwn w-full max-w-md p-3 fixed top-0 left-1 mt-[200px] z-50 bg-gray-200 rounded-lg">
+        <div class="relative mt-6"><input id="catggrp" class="input-box" type="text"/><label for="catggrp" class="label">Category</label></div>
+        <div class="relative mt-6"><input id="itemname" class="input-box" type="text"/><label for="itemname" class="label">Item Name</label></div>
+        <div class="relative mt-6"><input id="loc" class="input-box " type="text"/><label for="loc" class="label">Location(Store3,Shelf2,Rack6....)</label></div>
+        <div class="flex gap-10 justify-center">
+            <button class="mt-10 mb-5 px-10 py-2 bg-green-500 hover:bg-green-600 rounded-lg" onclick="saveCDSI('itemname')">Save</button>
+            <button class="mt-10 mb-5 px-10 py-2 bg-purple-500 hover:bg-purple-600 rounded-lg" onclick="showCont('tranCont')">Close</button>
+        </div>
     </div>
 </div>
 
-<div id="tblCont" class="hidden w-full p-1 rounded-b-2xl bg-gray-900">
-    <button class="bg-green-800  min-w-[113px] h-10 rounded-lg" id="excelBtn">Excel</button>
-    <button class="bg-red-800 min-w-[113px] h-10 rounded-lg" id="pdfBtn">PDF</button>
-    <button class="bg-blue-800 min-w-[113px] h-10 rounded-lg" id="printBtn">🖨️</button>
-    <input class="w-full max-w-[348px] px-2 mt-1 mb-1 h-10 bg-gray-900 border border-blue-600 rounded-lg" id="searchBox" placeholder="Search..." type="text" autocomplete="off"/>
+<div id="viewCont" class="hidden card max-w-md p-3 mt-5 ml-[100px] rounded-lg shadow-xl">
+    <button class="btn w-full px-2 py-2 text-left rounded-lg" onclick="insertTran(false, false, false)">Daybook 📕</button>
+    <button class="btn w-full px-2 py-2 text-left rounded-lg mt-1 mb-1" onclick="viewStock()">Stock 🚨</button>
+    <button class="btn w-full px-2 py-2 text-left rounded-lg" onclick="viewDeptCons()">Deptwise</button>
+    <button class="btn w-full px-2 py-2 text-left rounded-lg mt-1" onclick="viewCatgwiseStock()">Catgwise 🗃️</button>
+    <button class="btn w-full px-2 py-2 text-left rounded-lg mt-1 mb-1" onclick="showDashboard()">Dashboard 📊</button>
+</div>
+
+<div id="tblCont" class="hidden card w-fit p-1 mt-2 rounded-lg shadow-xl">
+    <div><input id="searchBox" class="drpdwn w-full max-w-md px-2 mb-2 h-10 border border-blue-600 rounded-lg" placeholder="Search..." type="text" autocomplete="off"/></div>
+    <div class="flex gap-1 justify-left">
+        <button id="excelBtn" class="btn block mx-auto w-12 h-12 p-1 rounded-full text-center ring-green-500 hover:ring-8 transition">Excel</button>
+        <button id="pdfBtn" class="btn block mx-auto w-12 h-12 p-1 rounded-full text-center ring-green-500 hover:ring-8 transition">PDF</button>
+        <button id="printBtn" class="btn block mx-auto w-12 h-12 p-1 rounded-full text-center ring-green-500 hover:ring-8 transition">🖨️</button>
+    </div>
     <div class="overflow-x-auto"><div id="table" class="rounded-lg mx-auto text-[18px] font-[Roboto]"></div></div>
 </div>
 
+<div id="dashCont" class="hidden max-w-md p-1 mt-2 rounded-lg shadow-xl"><h2>Dashboard</h2><canvas id="dashboardChart"></canvas></div>
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script> flatpickr(".date-input", { dateFormat: "d-m-Y", defaultDate: new Date() }); </script>
+<script src="https://www.youtube.com/iframe_api"></script>
 <script type="module">
     import {initializeApp} 
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -102,17 +155,19 @@
     const tranCol = collection(db, "inventory");
     window.cachedData = null, window.currentDocId = null;
     flatpickr(".date-input", { dateFormat: "d-m-Y", });
+    
     onAuthStateChanged(auth, async (user) => {
         if (user) { 
-            showCont('topbar'); 
+            showCont('topBar'); 
             await fetchAllOnce();
             await loadDropdownData();
-        } else { document.getElementById("topbar").classList.add("hidden"); showCont("lgnCont"); } 
+        } else { document.getElementById("topBar").style.setProperty('display', 'none', 'important'); showCont("lgnCont"); } 
     });
+    
     document.addEventListener('DOMContentLoaded', () => {
-        const labelClass = "absolute top-2 left-0 px-2 text-gray-500 transform -translate-y-6 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-80 peer-focus:text-blue-600";
+        const labelClass = "absolute top-2 left-0 text-gray-400 transform -translate-y-6 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-80 peer-focus:text-yellow-600";
         document.querySelectorAll('label').forEach(label => { label.classList.add(...labelClass.split(' ')); });
-        const inputClass = "peer w-full max-w-md px-2 border-b-2 border-gray-500 bg-transparent pt-2 focus:outline-none focus:border-blue-600 pr-2";
+        const inputClass = "peer w-full max-w-md border-b-2 border-gray-500 bg-transparent pt-2 focus:outline-none focus:border-yellow-600";
         document.querySelectorAll('.input-box').forEach(input => {
             input.classList.add(...inputClass.split(' '));
             input.setAttribute('placeholder', ' ');
@@ -127,26 +182,31 @@
             } 
         }); 
     });                 
-    document.getElementById('topbar').addEventListener('click', () => { document.getElementById('top-nav').classList.remove('-translate-y-full'); showCont(); clear(); onload();});
-    document.querySelectorAll('.menu-link').forEach(link => {
-        link.addEventListener('click', e => {
-            if (link.getAttribute('id') === 'close') { e.preventDefault(); }
-            document.getElementById('top-nav').classList.add('-translate-y-full');
-        });
-    });
     
     window.fetchAllOnce = async function() {
         if (!window.cachedData) {
-            const snapshot = await getDocs(collection(db, "inventory")); 
+            const snapshot = await getDocs(tranCol); 
             window.cachedData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); 
         }
         return window.cachedData;
     };
+    
     window.clear = function () { document.querySelectorAll("input").forEach(el => el.value = ""); };  
+    
     window.showCont = function (...idToShow) {
-        const allIds = ['lgnCont', 'suppCont', 'deptCont', 'catgCont', 'itemCont', 'tranCont', 'tblCont',];
-        allIds.forEach(id => { const el = document.getElementById(id); if (el) { el.classList.add("hidden"); el.style.setProperty('display', 'none', 'important'); } });
-        idToShow.forEach(id => { const el = document.getElementById(id); if (el) { el.classList.remove("hidden"); el.style.setProperty('display', 'block', 'important'); } }); 
+        const allBtns = ['crt', 'upd', 'view'];
+        const allIds = ['lgnCont', 'tranCont', 'suppCont', 'deptCont', 'catgCont', 'itemCont', 'viewCont', 'tblCont', 'dashCont', 'jokeBox', 'player'];
+        allIds.forEach(id => { const el = document.getElementById(id); if (el) { el.style.setProperty('display', 'none', 'important'); } });
+        allBtns.forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            if (btn) btn.classList.remove("scale-125", "ring-8", "blink");
+        });
+        idToShow.forEach(id => { const el = document.getElementById(id); if (el) { el.style.setProperty('display', 'block', 'important'); } });
+        idToShow.forEach(id => {
+            if (id === "tranCont") document.getElementById("crt").classList.add("scale-125", "ring-8", "blink");
+            if (id === "updtCont") document.getElementById("upd").classList.add("scale-125", "ring-8", "blink");
+            if (id === "rptCont") document.getElementById("view").classList.add("scale-125", "ring-8", "blink");
+        });
     };
     
     window.loadDropdownData = async function () {
@@ -156,6 +216,7 @@
         const deptSet = new Set();
         const itemSet = new Set();
         const selectedCatg = document.getElementById("catg1").value.trim();
+        
         dropData.forEach((data) => {
             const mgrp = (data.mgrp || "").trim();
             const grp = (data.grp || "").trim();
@@ -165,27 +226,32 @@
             if (mgrp === "Category" && grp.length > 0) {catgSet.add(grp);}
             if (selectedCatg && grp === selectedCatg && name.length > 0) { itemSet.add(name); }
         });
+        
         window.supplst = [...suppSet].sort((a, b) => a.localeCompare(b));
         window.catglst = [...catgSet].sort((a, b) => a.localeCompare(b));
         window.deptlst = [...deptSet].sort((a, b) => a.localeCompare(b));
         window.itemlst = [...itemSet].sort((a, b) => a.localeCompare(b));
+
         attachDropdown(document.getElementById("catggrp"), window.catglst);
         attachDropdown(document.getElementById("supp1"), window.supplst);
         attachDropdown(document.getElementById("catg1"), window.catglst);
         attachDropdown(document.getElementById("dept1"), window.deptlst);
         attachDropdown(document.getElementById("item1"), window.itemlst);
     };
+    
     window.attachDropdown = function (inputElement, dataList) {
         if (inputElement._dropdownCleanup) { inputElement._dropdownCleanup(); }
         let wrapper = inputElement.parentElement;
+
         if (!wrapper.classList.contains("relative")) {
             wrapper = document.createElement("div");
             wrapper.className = "relative w-full";
             inputElement.parentNode.insertBefore(wrapper, inputElement);
             wrapper.appendChild(inputElement);
         }
+
         let dropdown = document.createElement("ul");
-        dropdown.className = "absolute z-50 w-full max-h-100 overflow-y-auto bg-gray-800 border border-green-600 rounded-md hidden";
+        dropdown.className = "absolute z-50 w-full h-[300px] overflow-y-auto bg-gray-100 rounded-lg hidden";
         wrapper.appendChild(dropdown);
 
         function filterList() {
@@ -193,84 +259,161 @@
             const matches = dataList.filter(item => item.toLowerCase().includes(search));
             populateDropdown(matches);
         }
+
         function populateDropdown(list) {
             dropdown.innerHTML = "";
             list.forEach(item => {
                 const li = document.createElement("li");
                 li.textContent = item;
-                li.className = "px-2 py-2 hover:bg-gray-700 cursor-pointer";
-                li.addEventListener('mousedown', (e) => { e.preventDefault(); inputElement.value = item; dropdown.classList.add("hidden"); });
+                li.className = "px-2 py-2 hover:bg-gray-400 cursor-pointer";
+                li.addEventListener('mousedown', () => {
+                    inputElement.value = item;
+                    dropdown.classList.add("hidden");
+                });
                 dropdown.appendChild(li);
             });
         }
+
         const onInput = () => { dropdown.classList.remove("hidden"); filterList(); };
         const onClick = () => { dropdown.classList.remove("hidden"); filterList(); };
         const onBlur = () => {
             setTimeout(() => {
                 const value = inputElement.value.trim().toLowerCase();
-                if (value && !dataList.some(item => item.toLowerCase() === value)) { alert("Please select a valid option from the list."); inputElement.value = ""; return; }
+                if (value && !dataList.some(item => item.toLowerCase() === value)) {
+                    alert("Please select a valid option from the list. 🚫");
+                    inputElement.value = "";
+                    return;
+                }
             }, 200);
         };
+
         const onDocClick = (e) => { if (!wrapper.contains(e.target)) dropdown.classList.add("hidden"); };
         inputElement.addEventListener("input", onInput);
         inputElement.addEventListener("click", onClick);
         inputElement.addEventListener("blur", onBlur);
         document.addEventListener("click", onDocClick);
+
         inputElement._dropdownCleanup = () => {
             inputElement.removeEventListener("input", onInput);
             inputElement.removeEventListener("click", onClick);
             inputElement.removeEventListener("blur", onBlur);
             document.removeEventListener("click", onDocClick);
+
             if (dropdown.parentNode) dropdown.parentNode.removeChild(dropdown);
             inputElement._dropdownCleanup = null;
         };
     };
-    
+   
     window.createEditableTable = function (rows, columns, showDelete = true, showUpdate = true, editable = false) {
         if (window.table && typeof window.table.destroy === "function") window.table.destroy();
+        const isMobile = window.innerWidth < 768;  
         const searchId = document.getElementById('searchBox');
-        const fullColumns = columns.map(col => ({...col, editor: editable ? col.editor || "input" : false,}));
-        if (showDelete) {
-            fullColumns.push({
-                title: "",
-                field: "__delete",
-                formatter: () => `<div class="text-center cursor-pointer">⛔</div>`,
-                width: 70,
-                hozAlign: "center",
-                cellClick: async (e, cell) => {
-                    e.stopPropagation();
-                    const rowData = cell.getRow().getData();
-                    const confirmed = confirm("Delete? Are You Sure?");
-                    if (confirmed && rowData.id) {
-                        await deleteDoc(doc(db, "gopal", rowData.id));
-                        cell.getRow().delete(); 
-                        if (window.cachedData) { window.cachedData = window.cachedData.filter(doc => doc.id !== rowData.id); }
-                    } 
-                }, 
-            }); 
+        let fullColumns = columns.map(col => {
+            if (isMobile && col.field === "id") return { ...col, visible: false };
+            return { ...col, editor: editable ? col.editor || "input" : false };
+        });
+
+        if (!isMobile) {
+            if (showDelete) {
+                fullColumns.push({
+                    title: "",
+                    field: "__delete",
+                    formatter: () => `<div class="text-center cursor-pointer">⛔</div>`,
+                    width: 70,
+                    hozAlign: "center",
+                    cellClick: async (e, cell) => {
+                        e.stopPropagation();
+                        const rowData = cell.getRow().getData();
+                        const confirmed = confirm("Delete? Are You Sure?");
+                        if (confirmed && rowData.id) {
+                            await deleteDoc(doc(tranCol, rowData.id));
+                            cell.getRow().delete();
+                            if (cachedData) cachedData = cachedData.filter(doc => doc.id !== rowData.id);
+                        }
+                    },
+                });
+            }
+
+            if (showUpdate) {
+                fullColumns.push({
+                    title: "",
+                    field: "__update",
+                    formatter: () => `<div class="text-center cursor-pointer">✏️</div>`,
+                    width: 70,
+                    hozAlign: "center",
+                    cellClick: (e, cell) => {
+                        e.stopPropagation();
+                        const rowData = cell.getRow().getData();
+                        currentDocId = rowData.id;
+                        showTransactionContainer(rowData);
+                    },
+                });
+            }
         }
-        if (showUpdate) {
-            fullColumns.push({
-                title: "",
-                field: "__update",
-                formatter: () => `<div class="text-center cursor-pointer">✏️</div>`,
-                width: 70,
-                hozAlign: "center",
-                cellClick: (e, cell) => {
-                    e.stopPropagation();
-                    const rowData = cell.getRow().getData();
-                    window.currentDocId = rowData.id;
-                    showTransactionContainer(rowData); 
-                } 
-            }); 
-        }
+
         window.table = new Tabulator(document.getElementById('table'), {
-            data: rows, layout: "fitDataTable", reactiveData: true, rowHeight: 40, maxHeight: "600px", columns: fullColumns, });
-        document.getElementById('excelBtn')?.addEventListener("click", () => { window.table.download("xlsx", "data.xlsx", {sheetName: "Sheet1"}); });
-        document.getElementById('pdfBtn')?.addEventListener("click", () => { window.table.download("pdf", "data.pdf", {orientation: "portrait"}); });
+            data: rows,
+            layout: "fitDataTable",
+            reactiveData: true,
+            rowHeight: 40,
+            maxHeight: "600px",
+            headerVisible: !isMobile,
+            columns: fullColumns,
+            rowFormatter: isMobile ? function (row) {
+                row.getElement().style.display = "block";
+                let d = row.getData();
+                let card = document.createElement("div");
+                card.className = `w-full max-w-md bg-white grid grid-cols-[100px_1fr] mb-1 text-[18px] font-[Roboto] rounded-lg border border-green-500`;
+
+                let inner = "";
+                columns.forEach(col => {
+                    if (col.field !== "__delete" && col.field !== "__update") {
+                        const val = d[col.field];
+                        if (val !== undefined && val !== null && val !== "") {
+                            inner += ` <div class="text-gray-600 text-right px-1">${col.title}:</div> <div class="text-gray-900 px-1">${val}</div> `;
+                        }
+                    }
+                });
+
+                if (showDelete || showUpdate) {
+                    inner += `<div class="col-span-2 pb-2 pr-5 flex justify-end gap-20 rounded-lg">`;
+                    if (showDelete) inner += `<span class="delete-btn cursor-pointer">⛔</span>`;
+                    if (showUpdate) inner += `<span class="update-btn cursor-pointer">✏️</span>`;
+                    inner += `</div>`;
+                }
+
+                card.innerHTML = inner;
+                row.getElement().innerHTML = "";
+                row.getElement().appendChild(card);
+
+                if (showDelete) {
+                    card.querySelector(".delete-btn")?.addEventListener("click", async (e) => {
+                        e.stopPropagation();
+                        const confirmed = confirm("Delete? Are You Sure?");
+                        if (confirmed && d.id) {
+                            await deleteDoc(doc(tranCol, d.id));
+                            row.delete();
+                            if (cachedData) cachedData = cachedData.filter(doc => doc.id !== d.id);
+                        }
+                    });
+                }
+
+                if (showUpdate) {
+                    card.querySelector(".update-btn")?.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        currentDocId = d.id;
+                        showTransactionContainer(d);
+                    });
+                }
+            } : undefined
+        });
+
+        document.getElementById('excelBtn')?.addEventListener("click", () => { window.table.download("xlsx", "data.xlsx", { sheetName: "Sheet1" }); });
+        document.getElementById('pdfBtn')?.addEventListener("click", () => { window.table.download("pdf", "data.pdf", { orientation: "portrait" }); });
         document.getElementById('printBtn')?.addEventListener("click", () => { window.table.print(false, true); });
-        bindSearch(); 
+        bindSearch();
     };
+    
     window.bindSearch = function () {
         const searchbox = document.getElementById("searchBox");
         searchbox.addEventListener("input", function () {
@@ -281,23 +424,31 @@
             }); 
         }); 
     };
-
+   
     window.saveCDSI = async function(type) {
         let name = "", grp = "";
+
         if (type === "suppname") { name = document.getElementById("suppname").value.trim(); grp = "Supplier"; if (!name) return alert('Supplier Name is required.'); } 
         if (type === "deptname") { name = document.getElementById("deptname").value.trim(); grp = "Department"; if (!name) return alert('Department Name is required.'); } 
         if (type === "catgname") { grp = document.getElementById("catgname").value.trim(); if (!grp) return alert('Category Name is required.'); }
         if (type === "itemname") { name = document.getElementById("itemname").value.trim(); grp = document.getElementById("catggrp").value.trim(); if (!grp || !name) return alert('Category & Item Name are required.'); } 
+
         const loc = document.getElementById("loc").value.trim();
         const newDocData = { grp, ...(name ? { name } : {}) };
         if (loc) newDocData.loc = loc;
         if (type === "catgname") newDocData.mgrp = "Category";
+
+        const isDuplicate = window.cachedData.some(d => d.grp === newDocData.grp && (d.name || "") === (newDocData.name || "") );
+        if (isDuplicate) { return alert("Duplicate entry already exists."); }
+
         const docRef = await addDoc(tranCol, newDocData);
         const savedData = { id: docRef.id, ...newDocData };
         window.cachedData.push(savedData);
+
         await loadDropdownData();
         showCont('tranCont');
     };
+
     window.insertTran = async function (showDelete = true, showUpdate = true, editable = false) {
         const data = await fetchAllOnce();
         const rows = [];
@@ -320,17 +471,17 @@
             {title: "Date", field: "date"}, 
             {title: "Type", field: "ttype"}, 
             {title: "Supplier", field: "supp"}, 
-            {title: "Department", field: "dept"},  
-            {title: "Category", field: "catg"}, 
+            {title: "Dept", field: "dept"},  
+            {title: "Catg", field: "catg"}, 
             {title: "Items", field: "item"},
             {title: "Price", field: "price", hozAlign: "right"}, 
             {title: "Qty", field: "qty", hozAlign: "right"},
-            {title: "Narration", field: "nar"}, 
-            {title: "ID", field: "id", visible: false} 
+            {title: "Narr", field: "nar"}, 
         ];
         createEditableTable(rows, columns, showDelete, showUpdate, editable);
         showCont("tblCont"); 
     }; 
+    
     window.showTransactionContainer = function (rowData) { 
         const fieldDivs = ['dateDiv','suppDiv','deptDiv','catgDiv','itemDiv','pricDiv','qtyDiv','narDiv','btnDiv'];
         document.getElementById("ttype1").value = rowData.ttype || "";
@@ -356,6 +507,7 @@
         });
         showCont('tranCont');
     };
+    
     window.saveTran = async function () {
         const fields = ['ttype1','date1','supp1','dept1','catg1','item1','pric1','qty1','nar1'];    
         const values = {};
@@ -370,17 +522,72 @@
         if (values.nar1) tranData.nar = values.nar1;
 
         if (window.currentDocId) { 
-            const docRef = doc(db, "inventory", window.currentDocId); 
+            const docRef = doc(tranCol, window.currentDocId); 
             await updateDoc(docRef, tranData); 
             const index = window.cachedData.findIndex(item => item.id === docRef.id);
             if (index !== -1) { window.cachedData[index] = { ...window.cachedData[index], ...tranData }; }
             insertTran();
         } 
         else { 
-            const newDocRef = await addDoc(collection(db, "inventory"), tranData); 
+            const newDocRef = await addDoc(tranCol, tranData); 
             window.cachedData.push({ id: newDocRef.id, ...tranData });
         }
         clear(); window.currentDocId = null; window.onload();
+    };
+    
+    window.showDashboard = async function () {
+        showCont("dashCont");
+        const data = await fetchAllOnce();
+        const stockMap = {};
+
+        data.forEach(item => {
+            const key = item.item?.trim();
+            if (!key) return;
+            const qty = Number(item.qty) || 0;
+            if (!stockMap[key]) stockMap[key] = { in: 0, out: 0 };
+            if (item.ttype?.toLowerCase() === "in") {
+                stockMap[key].in += qty;
+            } else if (item.ttype?.toLowerCase() === "out") {
+                stockMap[key].out += qty;
+            }
+        });
+
+        const labels = Object.keys(stockMap);
+        const inData  = labels.map(i => stockMap[i].in);
+        const outData = labels.map(i => stockMap[i].out);
+
+        const textColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim();
+        if (window.dashboardChart instanceof Chart) { window.dashboardChart.destroy(); }
+
+        window.dashboardChart = new Chart(document.getElementById("dashboardChart"), {
+            type: 'bar',
+            data: { 
+                labels, 
+                datasets: [ 
+                    { label: "In",  data: inData,  backgroundColor: "rgba(75, 192, 192, 0.8)" }, 
+                    { label: "Out", data: outData, backgroundColor: "rgba(255, 99, 132, 0.8)" } 
+                ] 
+            }, 
+            options: { 
+                responsive: true, 
+                plugins: { 
+                    legend: {
+                        labels: { color: textColor }
+                    },
+                    datalabels: { 
+                        anchor: 'end', 
+                        align: 'start', 
+                        formatter: value => value.toLocaleString(), 
+                        font: { weight: 'bold' },
+                        color: textColor              
+                    } 
+                }, 
+                scales: { 
+                    x: { ticks: { color: textColor } },  
+                    y: { beginAtZero: true, ticks: { color: textColor } } 
+                } 
+            },
+        });
     };
 
     window.viewStock = async function () {
@@ -399,6 +606,7 @@
         createEditableTable(stockRows, stockColumns, false, false, false);
         showCont("tblCont"); 
     };
+    
     window.viewDeptCons = async function () {
         const data = await fetchAllOnce();
         const deptMap = {};
@@ -413,10 +621,11 @@
         });
         const rows = [];
         Object.entries(deptMap).forEach(([dept, items]) => { Object.entries(items).forEach(([itm, qty]) => { rows.push({ dept, item: itm, qty }); }); });
-        const columns = [ {title: "Department", field: "dept"}, {title: "Item", field: "item"}, {title: "Consumed Qty", field: "qty", hozAlign: "right"}, ];
+        const columns = [ {title: "Dept", field: "dept"}, {title: "Item", field: "item"}, {title: "Cons Qty", field: "qty", hozAlign: "right"}, ];
         createEditableTable(rows, columns, false, false, false);
         showCont("tblCont");
     };
+    
     window.viewCatgwiseStock = async function () {
         const data = await fetchAllOnce();
         const catgMap = {};
@@ -447,7 +656,9 @@
             });
         });
     };
-    document.getElementById("catg1").addEventListener("blur", () => { document.getElementById("item1").value = ""; loadDropdownData(); });
+    
+    document.getElementById("catg1").addEventListener("blur", async () => { document.getElementById("item1").value = ""; await loadDropdownData(); });
+    
     window.login = async function () {
         const email = document.getElementById("loginEmail").value;
         const password = document.getElementById("loginPassword").value;
@@ -455,10 +666,30 @@
         const user = userCredential.user;
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists() && docSnap.data().approved === true) { showCont("topbar"); }
+        if (docSnap.exists() && docSnap.data().approved === true) { showCont("topBar"); }
     };
+    
     window.logout = async function () { if (confirm("Are you sure you want to logout?")) { await signOut(auth); showCont("lgnCont"); } };
+    
     window.addEventListener("beforeunload", function (e) { e.preventDefault(); e.returnValue = ""; });
+    
+    window.switchTheme = function () {
+        showCont(); // do not remove needs to close forms to apply new theme
+        if (document.body.classList.contains('light-mode')) {
+            document.body.classList.add('dark-mode'); document.body.classList.remove('light-mode');
+        } 
+        else { document.body.classList.add('light-mode'); document.body.classList.remove('dark-mode'); }
+    };
+
+    window.jokes = async function () {
+        showCont('jokeBox');
+        const jokeBox = document.getElementById("jokeBox");
+        jokeBox.textContent = "Loading joke...";
+        const res = await fetch("https://official-joke-api.appspot.com/random_joke");
+        const data = await res.json();
+        jokeBox.textContent = data.setup + " 🤔 ... " + data.punchline;
+    };
+
 </script>
 </body>
 </html>
